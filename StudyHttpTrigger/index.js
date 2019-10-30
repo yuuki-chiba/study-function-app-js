@@ -3,6 +3,12 @@ const qs = require('qs');
 
 const apiUrl = 'https://api.coindesk.com/v1';
 
+const envHash = {
+    OS: process.env.OS
+};
+
+const sample = require('./sample');
+
 module.exports = async function (context, req) {
     context.log('JavaScript HTTP trigger function processed a request.');
 
@@ -19,6 +25,8 @@ module.exports = async function (context, req) {
     // get environment variable
     context.log("EnvVals: ");
     context.log(process.env);
+    context.log("OS     : ");
+    context.log(envHash.OS);
 
     // call an outer webapi:
     //   CoinDesk API: https://www.coindesk.com/api
@@ -29,6 +37,10 @@ module.exports = async function (context, req) {
     // parse query data
     // var parseStr = qs.parse(result);
     // context.log(parseStr);
+
+    // read outer data
+    context.log("a: ");
+    context.log(sample.a);
 
     // the following lines are original
     if (req.query.name || (req.body && req.body.name)) {
