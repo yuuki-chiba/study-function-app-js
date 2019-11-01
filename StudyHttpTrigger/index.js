@@ -3,6 +3,11 @@ const qs = require('qs');
 
 const apiUrl = 'https://api.coindesk.com/v1';
 
+// Recommended pattern
+const fs = require('fs');
+const util = require('util');
+const readFileAsync = util.promisify(fs.readFile);
+
 const envHash = {
     OS: process.env.OS
 };
@@ -41,6 +46,21 @@ module.exports = async function (context, req) {
     // read outer data
     context.log("a: ");
     context.log(sample.a);
+
+    // current directory
+    const currentDir = context.executionContext.functionDirectory;
+    context.log(`Current Dir: ${currentDir}`);
+
+    data = "";
+    try {
+        data = await readFileAsync(`${currentDir}/hello.txt`);
+    } catch (err) {
+        context.log.error('ERROR', err);
+        // This rethrown exception will be handled by the Functions Runtime and will only fail the individual invocation
+        throw err;
+    }
+    // Template strings - https://developer.mozilla.org/ja/docs/Web/JavaScript/Reference/template_strings
+    context.log(`Data from file: ${data}`);
 
     // the following lines are original
     if (req.query.name || (req.body && req.body.name)) {
