@@ -17,6 +17,11 @@ const sample = require('./sample');
 module.exports = async function (context, req) {
     context.log('JavaScript HTTP trigger function processed a request.');
 
+    // get route parameters
+    var category = context.bindingData.category;
+    var id = context.bindingData.id;
+    context.log(`Category: ${category}, ID: ${id}`);
+
     // get request information
     context.log("Headers: ");
     context.log(req.headers);
